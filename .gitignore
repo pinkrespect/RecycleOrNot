@@ -1,5 +1,5 @@
 # rust debug folder
-rust/*/target/
+target/
 
 
 # file for submission
