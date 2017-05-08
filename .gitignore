@@ -1,3 +1,7 @@
+# rust debug folder
+**/rust/*/target/
+
+
 # file for submission
 *.hwp
 *.png
