@@ -1,4 +1,4 @@
-# Garbage-Trash LAB
+# Recycle Or Not 
 
 ## Program 101
 
@@ -14,8 +14,8 @@
 
 ## Truth
 
-Garbage-Trash Lab에서는 제가 뭔가 숨겨놓고 싶거나,
+Recycle Or Not에서는 제가 뭔가 숨겨놓고 싶거나,
 
 이걸 어디다가 쓰나 싶은 코드들을 모아뒀다가,
 
-덩치가 커지거나 쓸모가 생기면 Repo를 분리시킬 예정입니다. 
+덩치가 커지거나 쓸모가 생겨서 분리 시키기 전까지 머무르는 Repository 입니다.
