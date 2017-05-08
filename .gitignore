@@ -1,0 +1,11 @@
+# file for submission
+*.hwp
+*.png
+
+# compile & excution file
+*.o
+*.exe
+*.out
+
+# .editorconfig
+.editorconfig
