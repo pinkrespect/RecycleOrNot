@@ -1,4 +1,4 @@
-# Django
+### Django
 장고 걸스 튜토리얼을 따라해 보았습니다.
 
 - <https://tutorial.djangogirls.org/ko/>
