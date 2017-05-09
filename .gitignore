@@ -6,6 +6,3 @@
 *.o
 *.exe
 *.out
-
-# .editorconfig
-.editorconfig
