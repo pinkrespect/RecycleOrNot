@@ -1,1 +1,1 @@
-/home/maisie/Documents/workspace/rust/hello_world/target/debug/hello_world: /home/maisie/Documents/workspace/rust/hello_world/src/main.rs
+/home/maisie/Documents/workspace/RecycleOrNot/rust/01_hello_world/target/debug/hello_world: /home/maisie/Documents/workspace/RecycleOrNot/rust/01_hello_world/src/main.rs
