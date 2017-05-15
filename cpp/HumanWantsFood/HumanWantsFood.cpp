@@ -14,7 +14,6 @@ public:
 
 	virtual void move() = 0;
 	virtual char getShape() = 0;
-	virtual void randStart() = 0;
 	
 	int getX(){
 		return x;
@@ -37,31 +36,30 @@ protected:
 	char input;
 
 public:
-	Human(){}
+	Human(){
+		this->x = rand() % 10;
+		this->y = rand() % 20;
+	}
 	Human(int startX, int startY):
-	GameObject(startX, startY) {}
+	GameObject() {
+	}
 	
 	
 	void setStartXY(char wasd){
 		this->input = wasd;
 	}
 	
-	void randStart(){
-		this->x = rand() % 10;
-		this->y = rand() % 20;
-	}
-
 	void move(){
-		if(input == 'w')
+		if(input == 'w' && this->y > 0)
 			this->y -= 1;
 
-		else if(input == 'a')
+		else if(input == 'a' && this->x > 0)
 			this->x -= 1;
 
-		else if(input == 's')
+		else if(input == 's' && this->y < 20)
 			this->y += 1;
 
-		else if(input == 'd')
+		else if(input == 'd' && this->x < 10)
 			this->x += 1;
 		
 		else
@@ -78,6 +76,7 @@ protected:
 	int count; // : Counting Food's turn.(Minimum: 0, Maximum: 4)
 public:
 	void setSequence(){
+		setCount();
 		this->sequence[rand() % 5];
 		
 		int index = rand() % 4;
@@ -91,16 +90,35 @@ public:
 		this->count = 0;
 	}
 
-	Food(){}
+	Food(){
+		this->x = rand() % 10;
+		this->y = rand() % 20;
+	}
 	Food(int startX, int startY):
-	GameObject(startX, startY) {}
+	GameObject(startX, startY) {
+	}
 	void move(){
+		// Food.move() makes move Food object random direction once.
 		if(count == 5){
-			count = 0;
 			setSequence();
 		} else {
-			this->x = rand() % 2;
-			this->y = rand() % 2;
+			int directionX = 0;
+			int directionY = 0;
+
+			directionX = rand() % 2 - 1;
+			directionY = rand() % 2 - 1;
+		
+			if(directionX == 1 && this->getX() < 10)
+				this->x += directionX;
+			else if(directionX == -1 && this->getX() > 0)
+				this->x += directionX;
+
+			if(directionY == 1 && this->getY() < 20)
+				this->y += directionY;
+			else if(directionY == -1 && this->getY() > 0)
+				this->y += directionY;	
+
+			this->count++;	
 		}
 	}
 	
@@ -108,19 +126,23 @@ public:
 		return '@';
 	}
 	
-	void randStart(){
-		this->x = rand() % 10;
-		this->y = rand() % 20;
-	}
 };
 
 class Monster : public GameObject {
 public:
-	Monster(){}
+	Monster(){
+		this->x = rand() % 10;
+		this->y = rand() % 20;
+	}
 	Monster(int startX, int startY):
-	GameObject(startX, startY){}
+	GameObject(startX, startY){
+	}
 	void move(){
-		int monsterX = 0, monsterY = 0;
+		// Monster.move() makes move monster objects twice for random directions.
+		int monsterX = 0;
+		int monsterY = 0;
+		int directionX = 0;
+		int directionY = 0;
 
 		monsterX = rand() % 2;
 
@@ -129,18 +151,28 @@ public:
 		
 		else if((monsterX - 2) == -1)
 			monsterY = 1;
+
+
+		directionX = rand() % 2 - 1;
+		directionY = rand() % 2 - 1;
 		
+		if(directionX == 1 && this->getX() < 10)
+			this->x += directionX * monsterX;
+		else if(directionX == -1 && this->getX() > 0)
+			this->x += monsterX * directionX;
 		else
-			monsterY = 0;
+			this->x += monsterX;
+
+		if(directionY == 1 && this->getY() < 20)
+			this->y += directionY * monsterY;
+		else if(directionY == -1 && this->getY() > 0)
+			this->y += directionY * monsterY;	
+		else
+			this->y += monsterY;
 	}
 
 	char getShape(){
 		return 'M';
-	}
-	
-	void randStart(){
-		this->x = rand() % 10;
-		this->y = rand() % 20;
 	}
 };
 
@@ -149,5 +181,36 @@ int main(){
 	Monster monster;
 	Human human;
 
-
+	while(true){
+		char gameboard[10][20];
+		char input;
+		for(int x = 0; x < 10; x++){
+			for(int y = 0; y < 20; y++){
+				if(food.getX() == x && food.getY() == y)
+					gameboard[x][y] = food.getShape();
+				else if(monster.getX() == x && monster.getY() == y)
+					gameboard[x][y] = monster.getShape();
+				else if(human.getX() == x && human.getY() == y)
+					gameboard[x][y] = human.getShape();
+				else
+					gameboard[x][y] = '~';
+				cout << gameboard[x][y];
+			}
+			cout << endl;
+		}
+		cout << "이동 방향을 입력하세요. >>"; 
+		cin >> input;
+		human.setStartXY(input);
+		human.move();
+		monster.move();
+		food.move();
+	
+		if(human.collide(&food) == true){
+			cout << "인간 승리!" << endl;
+			return 0;
+		}else if(monster.collide(&human) == true){
+			cout << "몬스터 승리!" << endl;
+			return 0;
+		}
 	}
+}
