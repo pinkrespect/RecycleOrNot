@@ -1,19 +1,33 @@
-from konlpy.corpus import kobill
-from konlpy.tag import Twitter
-twit = Twitter()
+import tweepy
+from tweepy.streaming import StreamListener
+
+import sqlalchemy
+import auth
+
+AUTH = tweepy.OAuthHandler(C_KEY, C_SECRET)
+AUTH.set_access_token(A_TOKEN_KEY, A_TOKEN_SECRET)
+
+API = tweepy.API(AUTH, wait_on_rate_limit=True,
+                 wait_on_rate_limit_notify=True)
+
+ME = API.me()
+MY_NAME = '@' + (ME.screen_name).lower()
+
+print(" * name: " + MY_NAME + " *")
 
 
-pos = lambda x: ['/'.join(p) for p in twit.pos(x)]
-docs = [kobill.open(i).read() for i in kobill.fileids()]
+class Timeline(StreamListener):
+    def on_status(self, status):
+        mentions = API.mentions_timeline(count=1)
+        for mention in mentions:
+            print(mention.text)
 
-# get global unique token counts
-global_unique = []
-global_unique_cnt = []
-for doc in docs:
-    tokens = pos(doc)
-    unique = set(tokens)
-    global_unique += list(unique)
-    global_unique = list(set(global_unique))
-    global_unique_cnt.append(len(global_unique))
-    print(len(unique), len(global_unique))
+        timelines = API.home_timeline()
+        for timeline in timelines:
+            print(timeline.text)
+
+
+listener = Timeline()
+stream = tweepy.Stream(auth=AUTH, listener=listener)
+stream.userstream(_with='user', async=False)
 
