@@ -5,3 +5,7 @@
 # Personal Information
 
 auth.py
+
+# editor configure
+__pycache__/
+.mypy_cache/
