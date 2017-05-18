@@ -21,19 +21,18 @@ print(" * name: " + MY_NAME + " *")
 
 class Timeline(StreamListener):
     def on_status(self, status):
-        print('hello')
-        timelines = API.home_timeline()
+        timelines = API.user_timeline(count=1)
         for timeline in timelines:
-            print(timeline.text)
-        
-        mentions = API.mentions_timeline(count=1)
-        for mention in mentions:
-            print(mention.text)
+            url = "https://twitter.com/" + ME.screen_name.lower() + "/status/"
+            url += str(timeline.id)
+            print(" [ " + timeline.text + " ] " + url)
+            
+
+# Reminder: Hashtag String
+# Read Later: Favorite
 
 
 listener = Timeline()
 stream = tweepy.Stream(auth=AUTH, listener=listener)
-stream.userstream()
+stream.userstream(_with="user")
 
-
-# TODO: It doesn't work. It can't holding itself.
