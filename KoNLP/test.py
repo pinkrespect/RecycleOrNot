@@ -3,6 +3,7 @@
 """
 import tweepy
 from tweepy.streaming import StreamListener
+from konlpy.tag import Kkma
 
 import sqlalchemy
 from auth import C_KEY, C_SECRET, A_TOKEN, A_SECRET
@@ -26,7 +27,12 @@ class Timeline(StreamListener):
             url = "https://twitter.com/" + ME.screen_name.lower() + "/status/"
             url += str(timeline.id)
             print(" [ " + timeline.text + " ] " + url)
-            
+            kkma = Kkma()
+            poslist = kkma.pos(timeline.text)
+            for word in poslist:
+                if word[1] == 'NNG':
+                    nnglist = word[0]
+                    print(nnglist)
 
 # Reminder: Hashtag String
 # Read Later: Favorite
@@ -35,4 +41,7 @@ class Timeline(StreamListener):
 listener = Timeline()
 stream = tweepy.Stream(auth=AUTH, listener=listener)
 stream.userstream(_with="user")
+
+
+
 
