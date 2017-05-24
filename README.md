@@ -1,4 +1,4 @@
-# Recycle Or Not 
+# :recycle:Recycle Or Not:recycle:
 
 ## Program 101
 
@@ -12,7 +12,7 @@
 
 ---------------
 
-## Truth
+## Truth :beginner:
 
 Recycle Or Not에서는 제가 뭔가 숨겨놓고 싶거나,
 
