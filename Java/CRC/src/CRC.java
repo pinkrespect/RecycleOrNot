@@ -1,36 +1,20 @@
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.stream.IntStream;
 
 public class CRC {
     static int[] CRC_Checker(int[] input) {
         int[] divisor = new int[]{1, 1, 0, 1, 0, 1};
-        int[] result = new int[input.length + divisor.length - 1];
-        List dividend = new ArrayList();
-        for(int i = 0; i < result.length; i++){
-            if(i < input.length)
-                dividend.add(input[i]);
-            else
-                dividend.add(0);
-        }
-
-        for (int i = 0; i < dividend.size() - divisor.length; i++) {
-            if ((int)dividend.get(i) == 0) {
-                continue;
+        int[] dividend = IntStream.concat(Arrays.stream(input),
+                IntStream.generate(() -> 0).limit(divisor.length-1)).toArray();
+        IntStream.range(0, input.length).forEachOrdered(i -> {
+            if(dividend[i] == 1){
+                IntStream.range(0, divisor.length).forEachOrdered(j -> {
+                    dividend[i+j] = divisor[j] ^ dividend[i+j];
+                });
             }
-            for (int j = 0; j < divisor.length; j++) {
-                dividend.set(i + j, divisor[j] ^ (int)dividend.get(i + j));
-            }
-        }
-
-        for(int i = 0; i < dividend.size(); i++){
-            if(i < input.length)
-                result[i] = input[i];
-            else
-                result[i] = (int)dividend.get(i);
-        }
-
-        return result;
+        });
+        return IntStream.concat(Arrays.stream(input),
+                Arrays.stream(dividend, dividend.length-divisor.length + 1, dividend.length)).toArray();
     }
 
     public static void main(String args[]) {
