@@ -8,4 +8,7 @@
 *.out
 
 # Exist Repository
-/CRC_java
+CRC_java/
+
+# Document folder
+Docu/
