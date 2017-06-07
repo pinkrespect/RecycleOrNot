@@ -8,4 +8,4 @@
 *.out
 
 # Exist Repository
-CRC_java/
+/CRC_java
