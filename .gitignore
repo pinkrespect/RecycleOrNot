@@ -6,9 +6,3 @@
 *.o
 *.exe
 *.out
-
-# Exist Repository
-CRC_java/
-
-# Document folder
-Docu/
